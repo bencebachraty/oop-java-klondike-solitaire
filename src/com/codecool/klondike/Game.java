@@ -183,14 +183,26 @@ public class Game extends Pane {
     }
 
     public void dealCards() {
+        for (int i = 0; i < 7; i++) {
+            for (int j = 0; j < i + 1; j++) {
+                Card cardToAdd = deck.get(i);
+                tableauPiles.get(i).addCard(cardToAdd);
+                addMouseEventHandlers(cardToAdd);
+                getChildren().add(cardToAdd);
+                deck.remove(cardToAdd);
+            }
+        }
+        for (Pile tableauPile: tableauPiles) {
+            tableauPile.getTopCard().flip();
+        }
+
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO 7. Setup nagy része, leosztja a kártyákat
+
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
             addMouseEventHandlers(card);
             getChildren().add(card);
         });
-
     }
 
     public void setTableBackground(Image tableBackground) {
