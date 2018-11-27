@@ -78,7 +78,7 @@ public class Game extends Pane {
             return;
         Card card = (Card) e.getSource();
         Pile pile = getValidIntersectingPile(card, tableauPiles);
-        //TODO
+        //TODO // 9.
         if (pile != null) {
             handleValidMove(card, pile);
         } else {
@@ -88,7 +88,7 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        //TODO
+        //TODO // 6. Winning condition
         return false;
     }
 
@@ -106,12 +106,12 @@ public class Game extends Pane {
     }
 
     public void refillStockFromDiscard() {
-        //TODO
+        //TODO **indivual**
         System.out.println("Stock refilled from discard pile.");
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO
+        //TODO **** 8 v 9. the dragged card to the right pile
         return true;
     }
     private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
@@ -182,7 +182,7 @@ public class Game extends Pane {
 
     public void dealCards() {
         Iterator<Card> deckIterator = deck.iterator();
-        //TODO
+        //TODO 7. Setup nagy része, leosztja a kártyákat
         deckIterator.forEachRemaining(card -> {
             stockPile.addCard(card);
             addMouseEventHandlers(card);
