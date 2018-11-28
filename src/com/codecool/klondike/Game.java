@@ -109,7 +109,7 @@ public class Game extends Pane {
 
     public boolean isGameWon() {
         //TODO // 6. Winning condition
-        String msgWon = "You Won! CONGRATULARIONS";
+        String msgWon = "You Won! CONGRATULATIONS";
         for (Pile foundationPile : foundationPiles) {
             if (foundationPile.numOfCards() == 13) {
                 Alert won = new Alert(Alert.AlertType.INFORMATION);
