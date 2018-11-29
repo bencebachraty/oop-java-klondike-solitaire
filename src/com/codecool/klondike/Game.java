@@ -141,17 +141,27 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        if (destPile == null || (destPile.isEmpty() && card.getRank() != Card.Rank.ACE)) {
+        if (destPile == null
+                || (destPile.getPileType() == Pile.PileType.FOUNDATION && destPile.isEmpty() && card.getRank() != Card.Rank.ACE)
+                || (destPile.getPileType() == Pile.PileType.TABLEAU && destPile.isEmpty() && card.getRank() != Card.Rank.KING)) {
             return false;
         }
 
         if (destPile.getPileType() == Pile.PileType.FOUNDATION
-            && destPile.isEmpty()
-            && card.getRank() == Card.Rank.ACE) {
+                && destPile.isEmpty()
+                && card.getRank() == Card.Rank.ACE) {
                 return true;
         } else if (destPile.getPileType() == Pile.PileType.FOUNDATION
-                    && destPile.getTopCard().getSuit().equals(card.getSuit())) {
-                    //&& destPile.getTopCard().getRankValue() == card.getRankValue()+1) {
+                    && destPile.getTopCard().getSuit() == card.getSuit()
+                    && destPile.getTopCard().getRankValue() == card.getRankValue() - 1) {
+            return true;
+        } else if (destPile.getPileType() == Pile.PileType.TABLEAU
+                    && destPile.isEmpty()
+                    && card.getRank() == Card.Rank.KING) {
+            return true;
+        } else if (destPile.getPileType() == Pile.PileType.TABLEAU
+                    && Card.isOppositeColor(card, destPile.getTopCard())
+                    && destPile.getTopCard().getRankValue() == card.getRankValue() + 1) {
             return true;
         }
         return false;
