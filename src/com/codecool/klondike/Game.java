@@ -59,6 +59,7 @@ public class Game extends Pane {
         Pile activePile = card.getContainingPile();
         if (activePile.getPileType() == Pile.PileType.STOCK
                 || (activePile.getPileType() == Pile.PileType.DISCARD && !card.equals(activePile.getTopCard()))
+                || (activePile.getPileType() == Pile.PileType.FOUNDATION && !card.equals(activePile.getTopCard()))
                 || card.isFaceDown())
             return;
         double offsetX = e.getSceneX() - dragStartX;
@@ -110,8 +111,28 @@ public class Game extends Pane {
     };
 
     public boolean isGameWon() {
-        //TODO // 6. Winning condition
-        return false;
+        String msgWon = "YOU WON! CONGRATULATIONS";
+        int fullPileCount = 0;
+        int lastPileCount = 0;
+        for (Pile foundationPile : foundationPiles) {
+            if (foundationPile.numOfCards() == 12) {
+                lastPileCount++;
+                for (Pile otherFoundationPile : foundationPiles) {
+                    if (otherFoundationPile.numOfCards() == 13) {
+                        fullPileCount++;
+                    }
+                }
+            }
+        }
+        if (fullPileCount == 3 && lastPileCount == 1) {
+            Alert won = new Alert(Alert.AlertType.INFORMATION);
+            won.setTitle("Guess what!");
+            won.setHeaderText(msgWon);
+            won.showAndWait();
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public Game() {
@@ -203,6 +224,7 @@ public class Game extends Pane {
             fromPile.getCards().get(indexOfCardToFlip).flip();
         }
         draggedCards.clear();
+        isGameWon();
     }
 
 
