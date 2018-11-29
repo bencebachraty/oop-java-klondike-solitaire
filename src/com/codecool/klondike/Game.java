@@ -13,6 +13,7 @@ import javafx.scene.layout.BackgroundRepeat;
 import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.Pane;
 
+import java.sql.SQLOutput;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -33,7 +34,6 @@ public class Game extends Pane {
     private static double STOCK_GAP = 1;
     private static double FOUNDATION_GAP = 0;
     private static double TABLEAU_GAP = 30;
-
 
     private EventHandler<MouseEvent> onMouseClickedHandler = e -> {
         Card card = (Card) e.getSource();
@@ -98,12 +98,14 @@ public class Game extends Pane {
             return;
         Card card = (Card) e.getSource();
         Pile pile = getValidIntersectingPile(card, tableauPiles);
-        //TODO // 9.
+        if (pile == null) {
+            pile = getValidIntersectingPile(card, foundationPiles);
+        }
         if (pile != null) {
             handleValidMove(card, pile);
         } else {
             draggedCards.forEach(MouseUtil::slideBack);
-            draggedCards = null;
+            draggedCards.clear();
         }
     };
 
@@ -139,10 +141,23 @@ public class Game extends Pane {
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
-        //TODO **** 8 v 9. the dragged card to the right pile
-        return true;
+        if (destPile == null || (destPile.isEmpty() && card.getRank() != Card.Rank.ACE)) {
+            return false;
+        }
+
+        if (destPile.getPileType() == Pile.PileType.FOUNDATION
+            && destPile.isEmpty()
+            && card.getRank() == Card.Rank.ACE) {
+                return true;
+        } else if (destPile.getPileType() == Pile.PileType.FOUNDATION
+                    && destPile.getTopCard().getSuit().equals(card.getSuit())) {
+                    //&& destPile.getTopCard().getRankValue() == card.getRankValue()+1) {
+            return true;
+        }
+        return false;
     }
-    private Pile getValidIntersectingPile(Card card, List<Pile> piles) {
+
+    private Pile  getValidIntersectingPile(Card card, List<Pile> piles) {
         Pile result = null;
         for (Pile pile : piles) {
             if (!pile.equals(card.getContainingPile()) &&
@@ -198,6 +213,7 @@ public class Game extends Pane {
             foundationPiles.add(foundationPile);
             getChildren().add(foundationPile);
         }
+
         for (int i = 0; i < 7; i++) {
             Pile tableauPile = new Pile(Pile.PileType.TABLEAU, "Tableau " + i, TABLEAU_GAP);
             tableauPile.setBlurredBackground();

@@ -1,0 +1,36 @@
+class Klondike
+    javafx
+        - Application:
+            - Stage
+                - width
+                - height
+            - Scene
+            - Nodes
+
+
+
+class Game
+    javafx
+        - EventHandler(s):
+            types:
+                - Mouse
+                    - click
+                    - press
+                    - release
+                    - move
+                    - enter
+                    - exit
+                - Key
+                - Drag
+                    - drag
+                        - enter
+                        - drop
+                    - target
+                        - enter
+                        - drop
+                    - over
+                - Window
+            event has:
+                - source
+                - target
+                - type
