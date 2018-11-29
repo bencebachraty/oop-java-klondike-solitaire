@@ -110,7 +110,7 @@ public class Game extends Pane {
         }
     };
 
-    public boolean isGameWon() {
+    public void isGameWon() {
         String msgWon = "YOU WON! CONGRATULATIONS";
         int fullPileCount = 0;
         int lastPileCount = 0;
@@ -129,9 +129,6 @@ public class Game extends Pane {
             won.setTitle("Guess what!");
             won.setHeaderText(msgWon);
             won.showAndWait();
-            return true;
-        } else {
-            return false;
         }
     }
 
@@ -173,6 +170,7 @@ public class Game extends Pane {
                 && card.getRank() == Card.Rank.ACE) {
                 return true;
         } else if (destPile.getPileType() == Pile.PileType.FOUNDATION
+                    && draggedCards.size() == 1
                     && destPile.getTopCard().getSuit() == card.getSuit()
                     && destPile.getTopCard().getRankValue() == card.getRankValue() - 1) {
             return true;
