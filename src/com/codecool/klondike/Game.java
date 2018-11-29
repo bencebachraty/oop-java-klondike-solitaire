@@ -109,16 +109,24 @@ public class Game extends Pane {
 
     public boolean isGameWon() {
         //TODO // 6. Winning condition
-        String msgWon = "You Won! CONGRATULATIONS";
+        String msgWon = "YOU WON! CONGRATULATIONS";
+        int pileCount = 0;
         for (Pile foundationPile : foundationPiles) {
             if (foundationPile.numOfCards() == 13) {
-                Alert won = new Alert(Alert.AlertType.INFORMATION);
-                won.setContentText(msgWon);
-                won.showAndWait();
+                pileCount += 1;
             }
-        }/*
+        }
+        if (pileCount == 4) {
+            Alert won = new Alert(Alert.AlertType.INFORMATION);
+            won.setTitle("Guess what!");
+            won.setHeaderText(msgWon);
+            won.showAndWait();
+            return true;
+        } else {
+            return false;
+        }
+        /*
         */
-        return false;
     }
 
     public Game() {
@@ -145,6 +153,10 @@ public class Game extends Pane {
         }
 
         System.out.println("Stock refilled from discard pile.");
+        Alert won = new Alert(Alert.AlertType.INFORMATION);
+        won.setTitle("Guess what!");
+        won.setHeaderText("CONGRATULATIONS! You won!");
+        won.showAndWait();
     }
 
     public boolean isMoveValid(Card card, Pile destPile) {
