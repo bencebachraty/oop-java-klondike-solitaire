@@ -9,8 +9,8 @@ import java.util.*;
 
 public class Card extends ImageView {
 
-    private int suit;
-    private int rank;
+    private Suit suit;
+    private Rank rank;
     private boolean faceDown;
 
     private Image backFace;
@@ -23,7 +23,7 @@ public class Card extends ImageView {
     public static final int WIDTH = 150;
     public static final int HEIGHT = 215;
 
-    public Card(int suit, int rank, boolean faceDown) {
+    public Card(Suit suit, Rank rank, boolean faceDown) {
         this.suit = suit;
         this.rank = rank;
         this.faceDown = faceDown;
@@ -34,12 +34,16 @@ public class Card extends ImageView {
         setEffect(dropShadow);
     }
 
-    public int getSuit() {
+    public Suit getSuit() {
         return suit;
     }
 
-    public int getRank() {
+    public Rank getRank() {
         return rank;
+    }
+
+    public int getRankValue(){
+        return rank.value;
     }
 
     public boolean isFaceDown() {
@@ -47,7 +51,7 @@ public class Card extends ImageView {
     }
 
     public String getShortName() {
-        return "S" + suit + "R" + rank;
+        return "S" + suit.value + "R" + rank.value;
     }
 
     public DropShadow getDropShadow() {
@@ -74,12 +78,15 @@ public class Card extends ImageView {
 
     @Override
     public String toString() {
-        return "The " + "Rank" + rank + " of " + "Suit" + suit;
+        return "The " + "Rank" + rank.value + " of " + "Suit" + suit.value;
     }
-
     public static boolean isOppositeColor(Card card1, Card card2) {
-        //TODO
-        return true;
+        if ((card1.getSuit() == Suit.HEARTS || card1.getSuit() == Suit.DIAMONDS) && (card2.getSuit() == Suit.SPADES || card2.getSuit() == Suit.CLUBS)) {
+            return true;
+        } else if ((card1.getSuit() == Suit.SPADES || card1.getSuit() == Suit.CLUBS) && (card2.getSuit() == Suit.HEARTS || card2.getSuit() == Suit.DIAMONDS)) {
+            return true;
+        }
+        return false;
     }
 
     public static boolean isSameSuit(Card card1, Card card2) {
@@ -88,8 +95,8 @@ public class Card extends ImageView {
 
     public static List<Card> createNewDeck() {
         List<Card> result = new ArrayList<>();
-        for (int suit = 1; suit < 5; suit++) {
-            for (int rank = 1; rank < 14; rank++) {
+        for (Suit suit : Suit.values()) {
+            for (Rank rank : Rank.values()) {
                 result.add(new Card(suit, rank, true));
             }
         }
@@ -99,28 +106,60 @@ public class Card extends ImageView {
     public static void loadCardImages() {
         cardBackImage = new Image("card_images/card_back.png");
         String suitName = "";
-        for (int suit = 1; suit < 5; suit++) {
+        for (Suit suit : Suit.values()) {
             switch (suit) {
-                case 1:
+                case HEARTS:
                     suitName = "hearts";
                     break;
-                case 2:
+                case DIAMONDS:
                     suitName = "diamonds";
                     break;
-                case 3:
+                case SPADES:
                     suitName = "spades";
                     break;
-                case 4:
+                case CLUBS:
                     suitName = "clubs";
                     break;
             }
-            for (int rank = 1; rank < 14; rank++) {
-                String cardName = suitName + rank;
-                String cardId = "S" + suit + "R" + rank;
+            for (Rank rank : Rank.values()) {
+                String cardName = suitName + rank.value;
+                String cardId = "S" + suit.value + "R" + rank.value;
                 String imageFileName = "card_images/" + cardName + ".png";
                 cardFaceImages.put(cardId, new Image(imageFileName));
             }
         }
     }
 
+    public enum Suit {
+        HEARTS(1),
+        DIAMONDS(2),
+        SPADES(3),
+        CLUBS(4);
+        private int value;
+
+        private Suit(int value) {
+            this.value = value;
+        }
+    }
+
+    public enum Rank {
+        ACE(1),
+        TWO(2),
+        THREE(3),
+        FOUR(4),
+        FIVE(5),
+        SIX(6),
+        SEVEN(7),
+        EIGHT(8),
+        NINE(9),
+        TEN(10),
+        JUMBO(11),
+        QUEEN(12),
+        KING(13);
+        private int value;
+
+        private Rank(int value) {
+            this.value = value;
+        }
+    }
 }
