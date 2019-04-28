@@ -137,7 +137,7 @@ public class Card extends ImageView {
         CLUBS(4);
         private int value;
 
-        private Suit(int value) {
+        Suit(int value) {
             this.value = value;
         }
     }
@@ -158,7 +158,7 @@ public class Card extends ImageView {
         KING(13);
         private int value;
 
-        private Rank(int value) {
+        Rank(int value) {
             this.value = value;
         }
     }

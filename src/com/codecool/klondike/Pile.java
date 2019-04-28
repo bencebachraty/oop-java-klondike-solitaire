@@ -8,9 +8,6 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 
-import java.util.List;
-import java.util.ListIterator;
-
 public class Pile extends Pane {
 
     private PileType pileType;
@@ -25,10 +22,6 @@ public class Pile extends Pane {
 
     public PileType getPileType() {
         return pileType;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public double getCardGap() {
